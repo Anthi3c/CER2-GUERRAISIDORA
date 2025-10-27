@@ -1,4 +1,3 @@
-# core/models.py
 from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -15,12 +14,13 @@ class Evento(models.Model):
     
     @property
     def inscritos_count(self):
-        # cuenta actual de inscritos
+        if hasattr(self, '_inscritos_count'):
+            return int(self._inscritos_count) or 0
         return self.evento_inscrito.count()
 
     @property
     def cupos_disponibles(self):
-        return max(0, self.cupos - self.inscritos_count)
+        return max(0, int(self.cupos or 0) - self.inscritos_count)
 
     def clean(self):
         # evitar que se reduzcan cupos por debajo de inscritos actuales

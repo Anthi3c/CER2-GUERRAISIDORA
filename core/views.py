@@ -17,7 +17,7 @@ def lista_e(request):
     inscritos = Inscrito.objects.all()
     return render(request, 'core/lista_e.html', {'eventos': eventos, 'inscritos':inscritos})"""
 
-    eventos = Evento.objects.annotate(inscritos_count=Count('evento_inscrito'))
+    eventos = Evento.objects.annotate(_inscritos_count=Count('evento_inscrito'))
     if request.user.is_authenticated:
         inscritos_event_ids = set(
             Inscrito.objects.filter(usuario=request.user).values_list('evento_id', flat=True)
@@ -62,7 +62,7 @@ def lista_e(request):
         return redirect('lista_e')
     
     for e in eventos:
-        e.cupos_disponibles = max(0, e.cupos - getattr(e, 'inscritos_count', 0))
+        e.available_cupos = max(0, e.cupos - e.evento_inscrito.count())
 
     return render(request, 'core/lista_e.html', {
         'eventos': eventos,
