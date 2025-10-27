@@ -66,27 +66,31 @@
                             <p class="card-text">Fecha y Hora: {{ evento.fecha }}</p>
                             <p class="card-text">Lugar: {{ evento.lugar }}</p>
                             <p class="card-text">Valor: {{ evento.valor }}</p>
-                            <p class="card-text">Cupos disponibles: {{ evento.cupos }}</p>
                             <br>
 
                             {% if user.is_authenticated %}
-                                <form method=POST>
+                            <form method="post" style="display:inline;">
                                 {% csrf_token %}
-                                <small> {{ inscritos.inscripcion }}</small>
-                                {% if user.username == inscritos.usuario.username %}
-                                    
-                                    <button class="btn btn-outline-danger" name="inscrito" value="desinscribir" type="submit">
-                                        DESINSCRIBIRTE
+                                <input type="hidden" name="event_id" value="{{ evento.id }}">
+                                <p>Cupos disponibles: {{ evento.cupos_disponibles }}</p>
+                                {% if evento.id in inscritos_event_ids %}
+                                <button type="submit" name="action" value="desinscribir" class="btn btn-outline-danger">
+                                    DESINSCRIBIRTE
+                                </button>
+                                {% else %}
+                                {% if evento.cupos_disponibles > 0 %}
+                                    <button type="submit" name="action" value="inscribir" class="btn btn-primary">
+                                    INSCRIBIRTE
                                     </button>
                                 {% else %}
-                                    <button class="buttons" name="sin_insc" value="inscribir" type="submit">
-                                        INSCRIBIRTE
+                                    <button type="button" class="btn btn-secondary" disabled>
+                                    CUPOS LLENOS
                                     </button>
                                 {% endif %}
-                                </form>
-
+                                {% endif %}
+                            </form>
                             {% else %}
-                                <small>Debes iniciar sesión para inscribirte en un Evento</small>
+                            <small>Debes iniciar sesión para inscribirte en un evento</small>
                             {% endif %}
 
                         </div>
