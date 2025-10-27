@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicia o Crea tu cuenta - SmartEvents</title>
+    <link rel="stylesheet" href="{% static 'usuarios/css/estilos.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
+</head>
+<body>
+    <!-- Barra de navegación -->
+     <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Smart Events</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Smart Events</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Página Principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="">Eventos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'comunidad' %}">Comunidad</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'logout' %}">Salir de tu cuenta</a>
+                            </li>
+
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'login' %}">Ingresa o crea tu cuenta</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif%}  
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-5"> 
+                <div class="titulo">      
+                    ¡Tengo una Cuenta!
+                </div> 
+                <div class="card" id="Log">
+                    <p>¡No te preocupes! </p>
+                    ¡Puedes acceder con tu cuenta clickeando
+                    <a href="{% url 'login' %}">aquí!</a>
+                </div>
+
+  
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-7">
+                <div class="titulo">      
+                    Crear mi cuenta
+                </div>  
+                
+                <form class="card" id="Log" action="{% url 'registrar' %}" method=POST>
+                    {% csrf_token %}
+
+                    {{ form.as_table }}
+                    
+                         
+                    <div class="buttons">
+                        <button type="submit">¡Crear!</button>
+                    </div>    
+                    <br>
+
+                </form>
+
+            </div>             
+        </div>       
+    {% endblock %}    
+    </div>
+</body>
+</html>
