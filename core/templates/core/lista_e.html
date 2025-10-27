@@ -74,16 +74,16 @@
                                 <input type="hidden" name="event_id" value="{{ evento.id }}">
                                 <p>Cupos disponibles: {{ evento.cupos_disponibles }}</p>
                                 {% if evento.id in inscritos_event_ids %}
-                                <button type="submit" name="action" value="desinscribir" class="btn btn-outline-danger">
+                                <button class="button"  type="submit" name="action" value="desinscribir" class="btn btn-outline-danger">
                                     DESINSCRIBIRTE
                                 </button>
                                 {% else %}
                                 {% if evento.cupos_disponibles > 0 %}
-                                    <button type="submit" name="action" value="inscribir" class="btn btn-primary">
+                                    <button class="button" id="ins" type="submit" name="action" value="inscribir" class="btn btn-primary">
                                     INSCRIBIRTE
                                     </button>
                                 {% else %}
-                                    <button type="button" class="btn btn-secondary" disabled>
+                                    <button class="button" id="cll" type="button" class="btn btn-secondary" disabled>
                                     CUPOS LLENOS
                                     </button>
                                 {% endif %}
